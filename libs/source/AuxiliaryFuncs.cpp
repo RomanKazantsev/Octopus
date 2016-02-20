@@ -29,9 +29,6 @@
 */
 
 #include "AuxiliaryFuncs.hpp"
-#include "big_int.hpp"
-
-using namespace Arageli;
 
 UINT8 rdtsc() {
     return (UINT8)__rdtsc();
@@ -70,7 +67,6 @@ Error_t EuclidAlg(Type a, Type b, Type &GCD)
 }
 template Error_t EuclidAlg(INT4 a, INT4 b, INT4 &GCD);
 template Error_t EuclidAlg(INT8 a, INT8 b, INT8 &GCD);
-template Error_t EuclidAlg(big_int a, big_int b, big_int &GCD);
 
 //extended euclid algorithm. a and b should be positive > 0
 //---------------- a*t1 + b*t2 = GCD(a,b), where t1 and t2 are integers 
@@ -109,4 +105,3 @@ Error_t ExtendedEuclidAlg(T a, T b, T &t1, T &t2, T &GCD)
 }
 template Error_t ExtendedEuclidAlg(INT4 a, INT4 b, INT4 &t1, INT4 &t2, INT4 &GCD);
 template Error_t ExtendedEuclidAlg(INT8 a, INT8 b, INT8 &t1, INT8 &t2, INT8 &GCD);
-template Error_t ExtendedEuclidAlg(big_int a, big_int b, big_int &t1, big_int &t2, big_int &GCD);

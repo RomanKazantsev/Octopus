@@ -31,9 +31,7 @@
 #include <iostream>
 
 #include "Algorithms.hpp"
-#include "big_int.hpp"
 
-using namespace Arageli;
 using namespace std;
 
 /* Compute modulo residue a(mod), where mod > 0 */
@@ -54,7 +52,6 @@ Error_t computeResidue(T a, T mod, T &residue)
 }
 template Error_t computeResidue(INT4 a, INT4 mod, INT4 &residue);
 template Error_t computeResidue(INT8 a, INT8 mod, INT8 &residue);
-template Error_t computeResidue(big_int a, big_int mod, big_int &residue);
 
 /* Compute modulo reduced residue a(mod), where mod > 0, so that is in (-mod/2; mod/2] */
 template<class T>
@@ -79,7 +76,6 @@ Error_t computeReducedResidue(T a, T mod, T &reducedResidue)
 }
 template Error_t computeReducedResidue(INT4 a, INT4 b, INT4 &res);
 template Error_t computeReducedResidue(INT8 a, INT8 b, INT8 &res);
-template Error_t computeReducedResidue(big_int a, big_int b, big_int &res);
 
 /* Compute all extreme points for Polytope of two-dimensional GMT (group minimization task) defined by
 t1 + alpha * t2 = gamma (mod delta), where t1, t2 non-negative integers */
@@ -163,7 +159,6 @@ Error_t gmt2D(T alpha, T gamma, T delta, set<array<T, 2>> &extremePoints)
 }
 template Error_t gmt2D(INT4 alpha, INT4 gamma, INT4 delta, set<array<INT4, 2>> &extremePoints);
 template Error_t gmt2D(INT8 alpha, INT8 gamma, INT8 delta, set<array<INT8, 2>> &extremePoints);
-template Error_t gmt2D(big_int alpha, big_int gamma, big_int delta, set<array<big_int, 2>> &extremePoints);
 
 /*Solve alpha * y = gamma (mod delta), where y is minimum non-negative integer */
 template<class T>
@@ -200,4 +195,3 @@ Error_t solveCongruent (T alpha, T gamma, T delta, T &y)
 }
 template Error_t solveCongruent (INT4 alpha, INT4 gamma, INT4 delta, INT4 &y);
 template Error_t solveCongruent (INT8 alpha, INT8 gamma, INT8 delta, INT8 &y);
-template Error_t solveCongruent (big_int alpha, big_int gamma, big_int delta, big_int &y);

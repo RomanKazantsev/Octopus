@@ -29,9 +29,6 @@
 */
 
 #include "Frobenius.hpp"
-#include "big_int.hpp"
-
-using namespace Arageli;
 
 template<class T>
 Frobenius<T>::Frobenius(T a, T b, T c)
@@ -199,7 +196,7 @@ Error_t Frobenius<T>::calcNonZeroLaticeExtremePoints (T alpha, T delta, set<arra
 template<class T>
 Error_t Frobenius<T>::findQ1Q2LatticeVectors(array<T, 2> q0, array<T, 2> y, array<T, 2> &q1, array<T, 2> &q2 )
 {
-	array<T, 3> Q0, Y, Q1, Q2;
+	array<T, 3> Q0, Y;
 	T k;
 
 	Q0[0] = b_ * q0[0] + c_ * q0[1];
@@ -426,9 +423,7 @@ template<class T>
 Error_t Frobenius<T>::solve()
 {
 	double start, finish;
-	double polytopeElapsedTime;
 	UINT8 clock1, clock2;
-	UINT8 polytopeCpuClocks;
 	Error_t retVal;
 
 	start = clock();
@@ -451,7 +446,6 @@ Error_t Frobenius<T>::solve()
 template<class T>
 Error_t Frobenius<T>::findMinimumLatticeVector(set<array<T, 2>> extremePoints, array<T, 2> f, array<T, 2> &q0)
 {
-	array<T, 2> tmpPoint;
 	set<array<T, 2>>::const_iterator it = extremePoints.begin();
 
 	q0[0] = (*it)[0];
@@ -527,4 +521,3 @@ Error_t Frobenius<T>::findLatticeBasisPairForQ0(array<T, 2> q0, array<T, 2> &y)
 
 template class Frobenius<INT4>; //explicit inst. of INT4 type knapsack problem
 template class Frobenius<INT8>; //explicit inst. of INT8 type knapsack problem
-template class Frobenius<big_int>; //explicit inst. of INT8 type knapsack problem

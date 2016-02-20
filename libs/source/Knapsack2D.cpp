@@ -29,9 +29,6 @@
 */
 
 #include "Knapsack2D.hpp"
-#include "big_int.hpp"
-
-using namespace Arageli;
 
 template<class T>
 Knapsack2DPolytope<T>::Knapsack2DPolytope(T a, T b, T c)
@@ -270,7 +267,6 @@ Knapsack2DPolytope<T>& Knapsack2DPolytope<T>::operator = (const Knapsack2DPolyto
 
 template class Knapsack2DPolytope<INT4>; //explicit inst. of INT4 type knapsack problem
 template class Knapsack2DPolytope<INT8>; //explicit inst. of INT8 type knapsack problem
-template class Knapsack2DPolytope<big_int>; //explicit inst. of big_int type knapsack problem
 
 
 template<class T>
@@ -513,4 +509,3 @@ Error_t Knapsack2D<T>::getKnapsack2DPolytope (Knapsack2DPolytope<T> & knapsack2D
 
 template class Knapsack2D<INT4>; //explicit inst. of INT4 type knapsack problem
 template class Knapsack2D<INT8>; //explicit inst. of INT8 type knapsack problem
-template class Knapsack2D<big_int>; //explicit inst. of big_int type knapsack problem
