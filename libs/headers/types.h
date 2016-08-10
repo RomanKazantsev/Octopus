@@ -1,4 +1,4 @@
-/* 
+/*
   Copyright (c) 2016, Roman Kazantsev
   All rights reserved.
 
@@ -28,12 +28,18 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-/*! \mainpage
- *
- * \section Introduction
- *
- * Octopus may help you to solve linear integer tasks and set experimental procedures for different purposes.
- * The current version contains of functionality for two-dimensional Knapsack problems.
- * Using Knapsack2DPolytope class, you can scripe a polytope of two-dimensional Knapsack for polynomial time.
- * Also, you can solve two-dimensional Knapsack problems using Knapsack2D class.
- */
+#ifndef LIBS_HEADERS_TYPES_H_
+#define LIBS_HEADERS_TYPES_H_
+
+#include <stdint.h>
+
+/*! \file types.h
+\brief Octopus specific types.
+*/
+
+typedef int32_t OctopusInt4;
+typedef uint32_t OctopusUint4;
+typedef int64_t OctopusInt8;
+typedef uint64_t OctopusUint8;
+
+#endif  // LIBS_HEADERS_TYPES_H_

@@ -1,4 +1,4 @@
-/* 
+/*
   Copyright (c) 2016, Roman Kazantsev
   All rights reserved.
 
@@ -28,42 +28,39 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-/*! \file Algorithms.hpp
-    \brief Core algorithms used to scribe polytopes.
-*/
+#ifndef LIBS_HEADERS_ALGORITHMS_H_
+#define LIBS_HEADERS_ALGORITHMS_H_
 
-#ifndef ALGORITHMS_HPP
-#define ALGORITHMS_HPP
+/*! \file algorithm.h
+\brief Core algorithms used to describe polytopes.
+*/
 
 #include <array>
 #include <set>
 
-using namespace std;
+/// Compute a remainder (residue) after division one number by another
+template <class T>
+void ComputeResidue(T const &a, T const &b, T* res_ptr);
 
-#include "Error.hpp"
-#include "AuxiliaryTypes.hpp"
-#include "AuxiliaryFuncs.hpp"
+/// Compute reduced remainder (residue) after division one number by another
+template <class T>
+void ComputeReducedResidue(T const &a, T const &b, T* reduced_res_ptr);
 
-/*! \fn Error_t computeResidue(T a, T mod, T &residue)
-Compute modulo residue a(mod), where mod > 0 
-*/
-template<class T>
-Error_t computeResidue(T a, T mod, T &residue);
+/// Compute Greatest Common Divisor (GCD) of two numbers
+template <class T>
+void ComputeGcd(T const &a, T const &b, T* gcd_ptr);
 
-/*! \fn Error_t computeReducedResidue(T a, T mod, T &reducedResidue)
-Compute modulo reduced residue a(mod), where mod > 0, so that is in (-mod/2; mod/2] 
-*/
-template<class T>
-Error_t computeReducedResidue(T a, T mod, T &reducedResidue);
+/// Compute Greatest Common Divisor of two numbers and Bezout coefficients
+template <class T>
+void ComputeGcdAndBezoutCoeffs(T const &a, T const &b, T* t1_ptr, T* t2_ptr, T* gcd_ptr);
 
-/*! \fn Error_t gmt2D(T alpha, T gamma, T delta, set<array<T, 2>> &extremePoints)
-Compute all extreme points for Polytope of two-dimensional GMT (group minimization task) defined by
-t1 + alpha * t2 = gamma (mod delta), where t1, t2 non-negative integers.
-*/
-template<class T>
-Error_t gmt2D(T alpha, T gamma, T delta, set<array<T, 2>> &extremePoints);
+/// Find extreme points of two dimension Group Minimization Task (GMT) polytop
+template <class T>
+void FindExtremePointsAt2dGmtPolytop(T const &alpha, T const &gamma, T const &delta,
+	std::set<std::array<T, 2>>* extreme_points_ptr);
 
-template<class T>
-Error_t solveCongruent (T alpha, T gamma, T delta, T &y);
+/// Solve linear congruence equation a * x = b (mod d)
+template <class T>
+void SolveLinearCongruenceEquation(T const &a, T const &b, T const &d, T* x_ptr);
 
-#endif // ALGORITHMS_HPP
+#endif  // LIBS_HEADERS_ALGORITHMS_H_

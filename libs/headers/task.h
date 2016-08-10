@@ -1,4 +1,4 @@
-/* 
+/*
   Copyright (c) 2016, Roman Kazantsev
   All rights reserved.
 
@@ -28,27 +28,55 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-/*! \file Error.hpp
-    \brief A list of return values for core algorithms and methods for classes
+/*!
+* \file
+* \brief Abstract class for task.
 */
+#ifndef LIBS_HEADERS_TASK_H_
+#define LIBS_HEADERS_TASK_H_
 
-#ifndef ERROR_HPP
-#define ERROR_HPP
+#include <iostream>
 
-#define SUCCESSFUL                     0
-#define INCORRECTARG                   1
-#define INCORRECTEXECFLOW			   2
+/*!
+Abstract class for task.
+*/
+class Task {
+ public:
+  /// task status
+  typedef enum { kOctopusUnsolved, kOctopusSolved } OctopusTaskStatus;
+  /// algorithm type: iterative or parallel
+  typedef enum { kOctopusIterativeAlg, kOctopusParallelAlg } OctopusAlgorithmType;
 
-#define INVALIDPOLYTOPE			       3
-#define UNSCRIBEDPOLYTOPE              4
-#define SCRIBEDPOLYTOPE                5
+  /// constructor
+  Task()
+      : status_(kOctopusUnsolved)
+      , alg_type_(kOctopusIterativeAlg) {}
+  /// copy constructor
+  Task(Task const& other) : status_(other.status_), alg_type_(other.alg_type_){}
+  /// reset a task
+  virtual void Reset() = 0;
+  /// solve a task
+  virtual void Solve(OctopusAlgorithmType alg_type) = 0;
+  /// write information about polytop to a file
+  virtual void Write(std::ostream& s) { 
+	  s << "status: " << status_ << std::endl;
+	  s << "algorithm type: " << alg_type_ << std::endl;
+  }
+  /// get task status
+  virtual OctopusTaskStatus GetTaskStatus() const { return status_; }
+  /// get algorithm type
+  virtual OctopusAlgorithmType GetAlgorithmType() { return alg_type_; }
+  /// assignment operator
+  Task& operator=(Task const& other) { 
+	  status_ = other.status_; 
+	  alg_type_ = other.alg_type_;
+	  return *this;}
+  /// destructors
+  virtual ~Task(){};
 
-#define SOLVEDKNAPSACK				   6
-#define UNSOLVEDKNAPSACK			   7
+ protected:
+  OctopusTaskStatus status_;
+  OctopusAlgorithmType alg_type_;
+};
 
-#define EMPTYSET                       8
-#define NOSOLUTION                     9
-
-typedef int Error_t;
-
-#endif // ERROR_HPP
+#endif  // LIBS_HEADERS_TASK_H_

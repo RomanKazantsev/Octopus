@@ -1,4 +1,4 @@
-/* 
+/*
   Copyright (c) 2016, Roman Kazantsev
   All rights reserved.
 
@@ -28,31 +28,40 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-/*! \file AuxiliaryFuncs.hpp
-    \brief Auxiliary functions: to count CPU clocks, etc.
-*/
+#include <iostream>
+#include <memory>
 
-#ifndef AUXILIARY_FUNCTIONS_HPP
-#define AUXILIARY_FUNCTIONS_HPP
+#include "libs/headers/types.h"
+#include "libs/headers/knapsack_2d_polytop.h"
 
-#include <intrin.h>
-#pragma intrinsic(__rdtsc)
+int main(int argc, char *argv[]) {
+  OctopusInt8 a, b, c;
 
-#include "AuxiliaryTypes.hpp"
-#include "Error.hpp"
+  std::cout << "For the following Knapsack Problem Polytop: " << std::endl;
+  std::cout << "\t a * x1 + b * x2 <= c " << std::endl;
+  std::cout << "\t x1, x2 - non-negative integers " << std::endl;
+  std::cout << "Please specify parameters a, b, c." << std::endl;
 
-/*! \fn UINT8 rdtsc()
-Count CPU clocks
-*/
-UINT8 rdtsc();
+  std::cout << " a = ";
+  std::cin >> a;
+  std::cout << " b = ";
+  std::cin >> b;
+  std::cout << " c = ";
+  std::cin >> c;
 
-//searching for GCD of two numbers a and b
-template<class Type>
-Error_t EuclidAlg(Type a, Type b, Type &GCD);
+  std::cout << std::endl;
 
-//extended euclid algorithm. a and b should be positive > 0
-//---------------- a*t1 + b*t2 = GCD(a,b), where t1 and t2 are integers 
-template<class T>
-Error_t ExtendedEuclidAlg(T a, T b, T &t1, T &t2, T &GCD);
+  try{
+	  std::shared_ptr<Knapsack2dPolytope<OctopusInt8>> task_ptr(
+		  new Knapsack2dPolytope<OctopusInt8>(a, b, c));
 
-#endif // AUXILIARY_FUNCTIONS_HPP
+	  task_ptr.get()->Solve(Task::kOctopusIterativeAlg);
+
+	  task_ptr.get()->Write(std::cout);
+  }
+  catch (std::exception const& ex) {
+	  std::cout << ex.what() << std::endl;
+  }
+
+  return 0;
+}

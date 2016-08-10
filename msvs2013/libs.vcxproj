@@ -11,21 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\libs\headers\Algorithms.hpp" />
-    <ClInclude Include="..\libs\headers\AuxiliaryFuncs.hpp" />
-    <ClInclude Include="..\libs\headers\AuxiliaryTypes.hpp" />
-    <ClInclude Include="..\libs\headers\Error.hpp" />
-    <ClInclude Include="..\libs\headers\Frobenius.hpp" />
-    <ClInclude Include="..\libs\headers\InverseKnapsack2D.hpp" />
-    <ClInclude Include="..\libs\headers\Knapsack2D.hpp" />
-    <ClInclude Include="..\libs\headers\Task.hpp" />
+    <ClInclude Include="..\libs\headers\types.h" />
+    <ClInclude Include="..\libs\headers\knapsack_2d_polytop.h" />
+    <ClInclude Include="..\libs\headers\task.h" />
+    <ClInclude Include="..\libs\headers\algorithms.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\libs\source\Algorithms.cpp" />
-    <ClCompile Include="..\libs\source\AuxiliaryFuncs.cpp" />
-    <ClCompile Include="..\libs\source\Frobenius.cpp" />
-    <ClCompile Include="..\libs\source\InverseKnapsack2D.cpp" />
-    <ClCompile Include="..\libs\source\Knapsack2D.cpp" />
+    <ClCompile Include="..\libs\source\algorithms.cc" />
+    <ClCompile Include="..\libs\source\knapsack_2d_polytop.cc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B33CB1E-9045-481B-A874-CC9D35D0060F}</ProjectGuid>
@@ -58,16 +51,18 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)\..\libs\headers;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\;$(IncludePath)</IncludePath>
     <SourcePath>$(SolutionDir)\..\libs\source;$(SourcePath)</SourcePath>
     <LibraryPath>$(SolutionDir)\..\libs\bin;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)\..\libs\bin\$(Configuration)\</OutDir>
+    <IntDir>libs\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)\..\libs\headers;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\;$(IncludePath)</IncludePath>
     <SourcePath>$(SolutionDir)\..\libs\source;$(SourcePath)</SourcePath>
     <LibraryPath>$(SolutionDir)\..\libs\bin;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)\..\libs\bin\$(Configuration)\</OutDir>
+    <IntDir>libs\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -107,7 +102,8 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <Lib>
-      <AdditionalDependencies></AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

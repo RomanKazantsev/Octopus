@@ -11,7 +11,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\apps\source\KnapsackProblem.cpp">
+    <ClCompile Include="..\apps\source\demo.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
