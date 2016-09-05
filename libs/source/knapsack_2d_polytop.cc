@@ -106,17 +106,16 @@ template <class T> void Knapsack2dPolytope<T>::RunIterativeAlgorithm() {
 
   status_ = Task::OctopusTaskStatus::kOctopusSolved;
 
-  std::set<std::array<T, 2>> gmt_extreme_points;
+  std::set<std::array<T, 2>> gmt_extreme_points{};
   gmt_extreme_points.clear();
 
   // x0 + a1*x1 = b(mod a2)
   FindExtremePointsAt2dGmtPolytop(a_, c_, b_, &gmt_extreme_points);
 
-  for (auto it = gmt_extreme_points.begin(); it != gmt_extreme_points.end();
-       it++) {
-    if (((c_ - a_ * (*it)[1] - (*it)[0]) / b_) >= 0) {
+  for (const auto &point : gmt_extreme_points) {
+    if (((c_ - a_ * point[1] - point[0]) / b_) >= 0) {
       extreme_points_.insert(
-          {{(*it)[1], (c_ - a_ * (*it)[1] - (*it)[0]) / b_}});
+          {{point[1], (c_ - a_ * point[1] - point[0]) / b_}});
     }
   }
 
@@ -124,34 +123,31 @@ template <class T> void Knapsack2dPolytope<T>::RunIterativeAlgorithm() {
   // x0 + a2 * x2 = b(mod a1)
   FindExtremePointsAt2dGmtPolytop(b_, c_, a_, &gmt_extreme_points);
 
-  for (auto it = gmt_extreme_points.begin(); it != gmt_extreme_points.end();
-       it++) {
-    if (((c_ - b_ * (*it)[1] - (*it)[0]) / a_) >= 0) {
+  for (const auto &point : gmt_extreme_points) {
+    if (((c_ - b_ * point[1] - point[0]) / a_) >= 0) {
       extreme_points_.insert(
-          {{(c_ - b_ * (*it)[1] - (*it)[0]) / a_, (*it)[1]}});
+          {{(c_ - b_ * point[1] - point[0]) / a_, point[1]}});
     }
   }
 }
 
-template <class T> void Knapsack2dPolytope<T>::Write(std::ostream& s){
-	s << "The Knapsack2D Polytope:" << std::endl;
-	s << "Conv { (x1, x2) :" << a_ << " * x1 + " << b_
-		<< " * x2 <= " << c_ << std::endl;
-	s << "x1,x2 are non-negative integer }" << std::endl;
+template <class T> void Knapsack2dPolytope<T>::Write(std::ostream &s) {
+  s << "The Knapsack2D Polytope:" << std::endl;
+  s << "Conv { (x1, x2) :" << a_ << " * x1 + " << b_ << " * x2 <= " << c_
+    << std::endl;
+  s << "x1,x2 are non-negative integer }" << std::endl;
 
-	if (status_ == Task::kOctopusSolved) {
-		s << "Decision:" << std::endl;
-		for (auto it = extreme_points_.begin(); it != extreme_points_.end(); it++) {
-			s << (*it)[0] << "\t" << (*it)[1] << std::endl;
-		}
-		s << "The number of edge points = " << extreme_points_.size()
-			<< std::endl;
-	}
-	else {
-		s << "The polytop has not yet been described." << std::endl;
-	}
+  if (status_ == Task::kOctopusSolved) {
+    s << "Decision:" << std::endl;
+    for (const auto &point : extreme_points_) {
+      s << point[0] << "\t" << point[1] << std::endl;
+    }
+    s << "The number of edge points = " << extreme_points_.size() << std::endl;
+  } else {
+    s << "The polytop has not yet been described." << std::endl;
+  }
 
-	Task::Write(s);
+  Task::Write(s);
 }
 
 template class Knapsack2dPolytope<OctopusInt4>;

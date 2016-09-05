@@ -51,16 +51,15 @@ int main(int argc, char *argv[]) {
 
   std::cout << std::endl;
 
-  try{
-	  std::shared_ptr<Knapsack2dPolytope<OctopusInt8>> task_ptr(
-		  new Knapsack2dPolytope<OctopusInt8>(a, b, c));
+  try {
+    std::shared_ptr<Knapsack2dPolytope<OctopusInt8>> task_ptr(
+        new Knapsack2dPolytope<OctopusInt8>(a, b, c));
 
-	  task_ptr.get()->Solve(Task::kOctopusIterativeAlg);
+    task_ptr.get()->Solve(Task::kOctopusIterativeAlg);
 
-	  task_ptr.get()->Write(std::cout);
-  }
-  catch (std::exception const& ex) {
-	  std::cout << ex.what() << std::endl;
+    task_ptr.get()->Write(std::cout);
+  } catch (std::exception const &ex) {
+    std::cout << ex.what() << std::endl;
   }
 
   return 0;

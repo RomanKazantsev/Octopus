@@ -73,93 +73,93 @@ template void ComputeReducedResidue(OctopusInt8 const &a, OctopusInt8 const &b,
                                     OctopusInt8 *reduced_res_ptr);
 
 template <class T> void ComputeGcd(T const &a, T const &b, T *gcd_ptr) {
-	if (gcd_ptr == nullptr) {
-		throw std::invalid_argument(
-			"Specified null pointer to store output values.");
-	}
+  if (gcd_ptr == nullptr) {
+    throw std::invalid_argument(
+        "Specified null pointer to store output values.");
+  }
 
-	if (a == 0 && b == 0) {
-		throw std::invalid_argument(
-			"Unable to compute GCD for both zero parameters.");
-	}
-	T aa = a, bb = b;
+  if (a == 0 && b == 0) {
+    throw std::invalid_argument(
+        "Unable to compute GCD for both zero parameters.");
+  }
+  T aa = a, bb = b;
 
-	if (aa < 0) {
-		aa = -aa;
-	}
-	if (bb < 0) {
-		bb = -bb;
-	}
+  if (aa < 0) {
+    aa = -aa;
+  }
+  if (bb < 0) {
+    bb = -bb;
+  }
 
-	if (bb == 0) {
-		aa = aa ^ bb;
-		bb = aa ^ bb;
-		aa = aa ^ bb;
-	}
+  if (bb == 0) {
+    aa = aa ^ bb;
+    bb = aa ^ bb;
+    aa = aa ^ bb;
+  }
 
-	T r = aa % bb;
+  T r = aa % bb;
 
-	while (r != 0) {
-		aa = bb;
-		bb = r;
-		r = aa % bb;
-	}
+  while (r != 0) {
+    aa = bb;
+    bb = r;
+    r = aa % bb;
+  }
 
-	*gcd_ptr = bb;
+  *gcd_ptr = bb;
 }
 
 template void ComputeGcd(OctopusInt4 const &a, OctopusInt4 const &b,
-	OctopusInt4 *gcd);
+                         OctopusInt4 *gcd);
 template void ComputeGcd(OctopusInt8 const &a, OctopusInt8 const &b,
-	OctopusInt8 *gcd);
+                         OctopusInt8 *gcd);
 
 template <class T>
 void ComputeGcdAndBezoutCoeffs(T const &a, T const &b, T *t1_ptr, T *t2_ptr,
-	T *gcd_ptr) {
-	if (t1_ptr == nullptr || t2_ptr == nullptr || gcd_ptr == nullptr) {
-		throw std::invalid_argument(
-			"Specified null pointer to store output values.");
-	}
+                               T *gcd_ptr) {
+  if (t1_ptr == nullptr || t2_ptr == nullptr || gcd_ptr == nullptr) {
+    throw std::invalid_argument(
+        "Specified null pointer to store output values.");
+  }
 
-	if (a == 0 && b == 0) {
-		throw std::invalid_argument(
-			"Unable to compute GCD for both zero parameters.");
-	}
+  if (a == 0 && b == 0) {
+    throw std::invalid_argument(
+        "Unable to compute GCD for both zero parameters.");
+  }
 
-	T aa = a, bb = b;
-	T x1 = 1, x2 = 0;
-	T y1 = 0, y2 = 1;
-	T r = aa % bb;
+  T aa = a, bb = b;
+  T x1 = 1, x2 = 0;
+  T y1 = 0, y2 = 1;
+  T r = aa % bb;
 
-	do {
-		T q = aa / bb;
-		r = aa % bb;
-		aa = bb;
-		bb = r;
+  do {
+    T q = aa / bb;
+    r = aa % bb;
+    aa = bb;
+    bb = r;
 
-		T tmp = x2;
-		x2 = x1 - q * x2;
-		x1 = tmp;
+    T tmp = x2;
+    x2 = x1 - q * x2;
+    x1 = tmp;
 
-		tmp = y2;
-		y2 = y1 - q * y2;
-		y1 = tmp;
-	} while (r != 0);
+    tmp = y2;
+    y2 = y1 - q * y2;
+    y1 = tmp;
+  } while (r != 0);
 
-	*gcd_ptr = aa;
-	*t1_ptr = x1;
-	*t2_ptr = y1;
+  *gcd_ptr = aa;
+  *t1_ptr = x1;
+  *t2_ptr = y1;
 }
 template void ComputeGcdAndBezoutCoeffs(OctopusInt4 const &a,
-	OctopusInt4 const &b,
-	OctopusInt4 *t1_ptr,
-	OctopusInt4 *t2_ptr,
-	OctopusInt4 *gdc_ptr);
+                                        OctopusInt4 const &b,
+                                        OctopusInt4 *t1_ptr,
+                                        OctopusInt4 *t2_ptr,
+                                        OctopusInt4 *gdc_ptr);
 template void ComputeGcdAndBezoutCoeffs(OctopusInt8 const &a,
-	OctopusInt8 const &b,
-	OctopusInt8 *t1_ptr,
-	OctopusInt8 *t2_ptr,
-	OctopusInt8 *gdc_ptr);
+                                        OctopusInt8 const &b,
+                                        OctopusInt8 *t1_ptr,
+                                        OctopusInt8 *t2_ptr,
+                                        OctopusInt8 *gdc_ptr);
 
 template <class T>
 void FindExtremePointsAt2dGmtPolytop(
@@ -178,8 +178,8 @@ void FindExtremePointsAt2dGmtPolytop(
   // clean up a set
   extreme_points_ptr->clear();
 
-  T red_res_alpha = 0;
-  T res_gamma = 0;
+  T red_res_alpha{};
+  T res_gamma{};
 
   ComputeReducedResidue(alpha, delta, &red_res_alpha);
   ComputeResidue(gamma, delta, &res_gamma);
@@ -199,10 +199,9 @@ void FindExtremePointsAt2dGmtPolytop(
     FindExtremePointsAt2dGmtPolytop(new_alpha, res_gamma, new_delta,
                                     &tmp_extreme_points);
 
-    for (auto it = tmp_extreme_points.begin(); it != tmp_extreme_points.end();
-         it++) {
+    for (const auto &point : tmp_extreme_points) {
       extreme_points_ptr->insert(
-          {{(*it)[0], (gamma + delta * (*it)[1] - (*it)[0]) / alpha}});
+          {{point[0], (gamma + delta * point[1] - point[0]) / alpha}});
     }
 
   } else if ((red_res_alpha < -1) && (2 * red_res_alpha > -delta)) {
@@ -215,10 +214,9 @@ void FindExtremePointsAt2dGmtPolytop(
     FindExtremePointsAt2dGmtPolytop(new_alpha, new_gamma, new_delta,
                                     &tmp_extreme_points);
 
-    for (auto it = tmp_extreme_points.begin(); it != tmp_extreme_points.end();
-         it++) {
+    for (const auto &point : tmp_extreme_points) {
       extreme_points_ptr->insert(
-          {{(*it)[0], (gamma - delta - delta * (*it)[1] - (*it)[0]) / alpha}});
+          {{point[0], (gamma - delta - delta * point[1] - point[0]) / alpha}});
     }
 
   } else {
@@ -249,8 +247,8 @@ void SolveLinearCongruenceEquation(T const &a, T const &b, T const &d,
         "Specified incorrect value for delta (modulus).");
   }
 
-  T res_alpha = 0, res_gamma = 0;
-  T gcd = 0, t1 = 0, t2 = 0;
+  T res_alpha{}, res_gamma{};
+  T gcd{}, t1{}, t2{};
 
   ComputeResidue(a, d, &res_alpha);
   ComputeResidue(b, d, &res_gamma);

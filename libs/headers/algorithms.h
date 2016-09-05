@@ -40,27 +40,30 @@
 
 /// Compute a remainder (residue) after division one number by another
 template <class T>
-void ComputeResidue(T const &a, T const &b, T* res_ptr);
+void ComputeResidue(T const& a, T const& b, T* res_ptr);
 
 /// Compute reduced remainder (residue) after division one number by another
 template <class T>
-void ComputeReducedResidue(T const &a, T const &b, T* reduced_res_ptr);
+void ComputeReducedResidue(T const& a, T const& b, T* reduced_res_ptr);
 
 /// Compute Greatest Common Divisor (GCD) of two numbers
 template <class T>
-void ComputeGcd(T const &a, T const &b, T* gcd_ptr);
+void ComputeGcd(T const& a, T const& b, T* gcd_ptr);
 
 /// Compute Greatest Common Divisor of two numbers and Bezout coefficients
 template <class T>
-void ComputeGcdAndBezoutCoeffs(T const &a, T const &b, T* t1_ptr, T* t2_ptr, T* gcd_ptr);
+void ComputeGcdAndBezoutCoeffs(T const& a, T const& b, T* t1_ptr, T* t2_ptr,
+                               T* gcd_ptr);
 
 /// Find extreme points of two dimension Group Minimization Task (GMT) polytop
 template <class T>
-void FindExtremePointsAt2dGmtPolytop(T const &alpha, T const &gamma, T const &delta,
-	std::set<std::array<T, 2>>* extreme_points_ptr);
+void FindExtremePointsAt2dGmtPolytop(
+    T const& alpha, T const& gamma, T const& delta,
+    std::set<std::array<T, 2>>* extreme_points_ptr);
 
 /// Solve linear congruence equation a * x = b (mod d)
 template <class T>
-void SolveLinearCongruenceEquation(T const &a, T const &b, T const &d, T* x_ptr);
+void SolveLinearCongruenceEquation(T const& a, T const& b, T const& d,
+                                   T* x_ptr);
 
 #endif  // LIBS_HEADERS_ALGORITHMS_H_

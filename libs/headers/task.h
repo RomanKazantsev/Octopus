@@ -45,34 +45,37 @@ class Task {
   /// task status
   typedef enum { kOctopusUnsolved, kOctopusSolved } OctopusTaskStatus;
   /// algorithm type: iterative or parallel
-  typedef enum { kOctopusIterativeAlg, kOctopusParallelAlg } OctopusAlgorithmType;
+  typedef enum {
+    kOctopusIterativeAlg,
+    kOctopusParallelAlg
+  } OctopusAlgorithmType;
 
   /// constructor
-  Task()
-      : status_(kOctopusUnsolved)
-      , alg_type_(kOctopusIterativeAlg) {}
+  Task() : status_(kOctopusUnsolved), alg_type_(kOctopusIterativeAlg) {}
   /// copy constructor
-  Task(Task const& other) : status_(other.status_), alg_type_(other.alg_type_){}
+  Task(Task const& other)
+      : status_(other.status_), alg_type_(other.alg_type_) {}
   /// reset a task
   virtual void Reset() = 0;
   /// solve a task
   virtual void Solve(OctopusAlgorithmType alg_type) = 0;
   /// write information about polytop to a file
-  virtual void Write(std::ostream& s) { 
-	  s << "status: " << status_ << std::endl;
-	  s << "algorithm type: " << alg_type_ << std::endl;
+  virtual void Write(std::ostream& s) {
+    s << "status: " << status_ << std::endl;
+    s << "algorithm type: " << alg_type_ << std::endl;
   }
   /// get task status
   virtual OctopusTaskStatus GetTaskStatus() const { return status_; }
   /// get algorithm type
   virtual OctopusAlgorithmType GetAlgorithmType() { return alg_type_; }
   /// assignment operator
-  Task& operator=(Task const& other) { 
-	  status_ = other.status_; 
-	  alg_type_ = other.alg_type_;
-	  return *this;}
-  /// destructors
-  virtual ~Task(){};
+  Task& operator=(Task const& other) {
+    status_ = other.status_;
+    alg_type_ = other.alg_type_;
+    return *this;
+  }
+  /// destructor
+  virtual ~Task() {}
 
  protected:
   OctopusTaskStatus status_;

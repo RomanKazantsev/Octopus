@@ -58,7 +58,8 @@ class Knapsack2dPolytope : public Task {
   /// reset problem status
   virtual void Reset();
   /// find extreme points at the polytop
-  virtual void Solve(OctopusAlgorithmType alg_type = Task::kOctopusIterativeAlg);
+  virtual void Solve(
+      OctopusAlgorithmType alg_type = Task::kOctopusIterativeAlg);
   /// write information about polytop to a file
   virtual void Write(std::ostream& s);
   /// assignment operator
