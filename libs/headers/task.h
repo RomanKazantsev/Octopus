@@ -43,15 +43,14 @@ Abstract class for task.
 class Task {
  public:
   /// task status
-  typedef enum { kOctopusUnsolved, kOctopusSolved } OctopusTaskStatus;
+  enum class OctopusTaskStatus { kOctopusUnsolved, kOctopusSolved };
   /// algorithm type: iterative or parallel
-  typedef enum {
-    kOctopusIterativeAlg,
-    kOctopusParallelAlg
-  } OctopusAlgorithmType;
+  enum class OctopusAlgorithmType { kOctopusIterativeAlg, kOctopusParallelAlg };
 
   /// constructor
-  Task() : status_(kOctopusUnsolved), alg_type_(kOctopusIterativeAlg) {}
+  Task()
+      : status_(OctopusTaskStatus::kOctopusUnsolved)
+      , alg_type_(OctopusAlgorithmType::kOctopusIterativeAlg) {}
   /// copy constructor
   Task(Task const& other)
       : status_(other.status_), alg_type_(other.alg_type_) {}
@@ -61,13 +60,31 @@ class Task {
   virtual void Solve(OctopusAlgorithmType alg_type) = 0;
   /// write information about polytop to a file
   virtual void Write(std::ostream& s) {
-    s << "status: " << status_ << std::endl;
-    s << "algorithm type: " << alg_type_ << std::endl;
+    switch (status_) {
+      case OctopusTaskStatus::kOctopusSolved:
+        s << "Status: solved" << std::endl;
+        break;
+      case OctopusTaskStatus::kOctopusUnsolved:
+        s << "Status: unsolved" << std::endl;
+        break;
+      default:
+        throw std::runtime_error("Unknown task status.");
+    }
+
+    switch (alg_type_) {
+      case Task::OctopusAlgorithmType::kOctopusIterativeAlg:
+        s << "Algorithm: iterative" << std::endl;
+        break;
+      default:
+        throw std::runtime_error("Unknown or unsupported algorithm.");
+    }
   }
   /// get task status
-  virtual OctopusTaskStatus GetTaskStatus() const { return status_; }
+  virtual OctopusTaskStatus GetTaskStatus() const final { return status_; }
   /// get algorithm type
-  virtual OctopusAlgorithmType GetAlgorithmType() { return alg_type_; }
+  virtual OctopusAlgorithmType GetAlgorithmType() const final {
+    return alg_type_;
+  }
   /// assignment operator
   Task& operator=(Task const& other) {
     status_ = other.status_;

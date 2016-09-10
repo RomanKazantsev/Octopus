@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
     std::shared_ptr<Knapsack2dPolytope<OctopusInt8>> task_ptr(
         new Knapsack2dPolytope<OctopusInt8>(a, b, c));
 
-    task_ptr.get()->Solve(Task::kOctopusIterativeAlg);
+    task_ptr.get()->Solve(Task::OctopusAlgorithmType::kOctopusIterativeAlg);
 
     task_ptr.get()->Write(std::cout);
   } catch (std::exception const &ex) {

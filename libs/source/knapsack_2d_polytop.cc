@@ -75,7 +75,8 @@ void Knapsack2dPolytope<T>::GetParams(T *a_ptr, T *b_ptr, T *c_ptr) const {
 
 template <class T>
 void Knapsack2dPolytope<T>::Solve(
-    OctopusAlgorithmType alg_type = Task::kOctopusIterativeAlg) {
+    OctopusAlgorithmType alg_type =
+        OctopusAlgorithmType::kOctopusIterativeAlg) {
   if (status_ == Task::OctopusTaskStatus::kOctopusSolved) {
     throw std::logic_error("The task has been already solved.");
   }
@@ -102,7 +103,7 @@ template <class T> void Knapsack2dPolytope<T>::RunIterativeAlgorithm() {
   // clear a set of extreme points
   extreme_points_.clear();
   // add zero point to a set of extreme points
-  extreme_points_.insert(std::array<T, 2>{{0, 0}});
+  extreme_points_.insert(std::move(std::array<T, 2>{{0, 0}}));
 
   status_ = Task::OctopusTaskStatus::kOctopusSolved;
 
@@ -114,8 +115,8 @@ template <class T> void Knapsack2dPolytope<T>::RunIterativeAlgorithm() {
 
   for (const auto &point : gmt_extreme_points) {
     if (((c_ - a_ * point[1] - point[0]) / b_) >= 0) {
-      extreme_points_.insert(
-          {{point[1], (c_ - a_ * point[1] - point[0]) / b_}});
+      extreme_points_.insert(std::move<std::array<T, 2>>(
+          {{point[1], (c_ - a_ * point[1] - point[0]) / b_}}));
     }
   }
 
@@ -125,8 +126,8 @@ template <class T> void Knapsack2dPolytope<T>::RunIterativeAlgorithm() {
 
   for (const auto &point : gmt_extreme_points) {
     if (((c_ - b_ * point[1] - point[0]) / a_) >= 0) {
-      extreme_points_.insert(
-          {{(c_ - b_ * point[1] - point[0]) / a_, point[1]}});
+      extreme_points_.insert(std::move<std::array<T, 2>>(
+          {{(c_ - b_ * point[1] - point[0]) / a_, point[1]}}));
     }
   }
 }
@@ -137,7 +138,7 @@ template <class T> void Knapsack2dPolytope<T>::Write(std::ostream &s) {
     << std::endl;
   s << "x1,x2 are non-negative integer }" << std::endl;
 
-  if (status_ == Task::kOctopusSolved) {
+  if (status_ == OctopusTaskStatus::kOctopusSolved) {
     s << "Decision:" << std::endl;
     for (const auto &point : extreme_points_) {
       s << point[0] << "\t" << point[1] << std::endl;

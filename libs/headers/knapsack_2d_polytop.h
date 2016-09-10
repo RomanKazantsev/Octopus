@@ -56,12 +56,13 @@ class Knapsack2dPolytope : public Task {
   /// get polytop parameters
   void GetParams(T* a_ptr, T* b_ptr, T* c_ptr) const;
   /// reset problem status
-  virtual void Reset();
+  virtual void Reset() override;
   /// find extreme points at the polytop
   virtual void Solve(
-      OctopusAlgorithmType alg_type = Task::kOctopusIterativeAlg);
+      OctopusAlgorithmType
+          alg_type = OctopusAlgorithmType::kOctopusIterativeAlg) override;
   /// write information about polytop to a file
-  virtual void Write(std::ostream& s);
+  virtual void Write(std::ostream& s) override;
   /// assignment operator
   Knapsack2dPolytope<T>& operator=(Knapsack2dPolytope<T> const& other);
   /// destructor
