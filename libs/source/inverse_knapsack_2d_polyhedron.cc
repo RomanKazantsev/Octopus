@@ -32,49 +32,20 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdexcept>
 
 #include "libs/headers/types.h"
-#include "libs/headers/knapsack_2d_polytop.h"
+#include "libs/headers/inverse_knapsack_2d_polyhedron.h"
 #include "libs/headers/algorithms.h"
 
-template <class T> Knapsack2dPolytope<T>::Knapsack2dPolytope(T a, T b, T c) {
-  if (a <= 0 || b <= 0 || c <= 0) {
-    throw std::invalid_argument("Input parameters must be positive.");
-  }
-  a_ = a;
-  b_ = b;
-  c_ = c;
-  extreme_points_.clear();
-}
+template <class T>
+InverseKnapsack2dPolyhedron<T>::InverseKnapsack2dPolyhedron(T a, T b, T c)
+    : Knapsack2dPolytope<T>(a, b, c) {}
 
 template <class T>
-Knapsack2dPolytope<T>::Knapsack2dPolytope(Knapsack2dPolytope const &other)
-    : Task(other), a_(other.a_), b_(other.b_), c_(other.c_),
-      extreme_points_(other.extreme_points_) {}
-
-template <class T> Knapsack2dPolytope<T>::~Knapsack2dPolytope() {}
-
-template <class T> void Knapsack2dPolytope<T>::Reset() {
-  extreme_points_.clear();
-  status_ = Task::OctopusTaskStatus::kOctopusUnsolved;
-}
+InverseKnapsack2dPolyhedron<T>::InverseKnapsack2dPolyhedron(
+    InverseKnapsack2dPolyhedron<T> const &other)
+    : Knapsack2dPolytope<T>(other) {}
 
 template <class T>
-void Knapsack2dPolytope<T>::GetExtremePoints(
-    std::set<std::array<T, 2>> *extreme_points_ptr) const {
-  if (status_ != Task::OctopusTaskStatus::kOctopusSolved) {
-    throw std::logic_error("The task is not solved.");
-  }
-  *extreme_points_ptr = extreme_points_;
-}
-
-template <class T>
-void Knapsack2dPolytope<T>::GetParams(T *a_ptr, T *b_ptr, T *c_ptr) const {
-  *a_ptr = a_;
-  *b_ptr = b_;
-  *c_ptr = c_;
-}
-
-template <class T>
-void Knapsack2dPolytope<T>::Solve(
+void InverseKnapsack2dPolyhedron<T>::Solve(
     OctopusAlgorithmType alg_type =
         OctopusAlgorithmType::kOctopusIterativeAlg) {
   if (status_ == Task::OctopusTaskStatus::kOctopusSolved) {
@@ -88,53 +59,48 @@ void Knapsack2dPolytope<T>::Solve(
 }
 
 template <class T>
-Knapsack2dPolytope<T> &Knapsack2dPolytope<T>::
-operator=(Knapsack2dPolytope<T> const &other) {
-  Task::operator=(other);
-  a_ = other.a_;
-  b_ = other.b_;
-  c_ = other.c_;
-  extreme_points_ = other.extreme_points_;
+InverseKnapsack2dPolyhedron<T> &InverseKnapsack2dPolyhedron<T>::
+operator=(InverseKnapsack2dPolyhedron<T> const &other) {
+  Knapsack2dPolytope<T>::operator=(other);
 
   return *this;
 }
 
-template <class T> void Knapsack2dPolytope<T>::RunIterativeAlgorithm() {
+template <class T>
+void InverseKnapsack2dPolyhedron<T>::RunIterativeAlgorithm() {
   // clear a set of extreme points
   extreme_points_.clear();
-  // add zero point to a set of extreme points
-  extreme_points_.insert(std::move(std::array<T, 2>{{0, 0}}));
 
   std::set<std::array<T, 2>> gmt_extreme_points{};
 
   gmt_extreme_points.clear();
-  // x0 + a1*x1 = b(mod a2)
-  FindExtremePointsAt2dGmtPolytop(a_, c_, b_, &gmt_extreme_points);
+  // x0 - a*x1 = -c(mod b)
+  FindExtremePointsAt2dGmtPolytop(-a_, -c_, b_, &gmt_extreme_points);
 
   for (const auto &point : gmt_extreme_points) {
-    if (((c_ - a_ * point[1] - point[0]) / b_) >= 0) {
+    if (((c_ - a_ * point[1] + point[0]) / b_) >= 0) {
       extreme_points_.insert(std::move<std::array<T, 2>>(
-          {{point[1], (c_ - a_ * point[1] - point[0]) / b_}}));
+          {{point[1], (c_ - a_ * point[1] + point[0]) / b_}}));
     }
   }
 
   gmt_extreme_points.clear();
-  // x0 + a2 * x2 = b(mod a1)
-  FindExtremePointsAt2dGmtPolytop(b_, c_, a_, &gmt_extreme_points);
+  // x0 - b * x2 = -c(mod a)
+  FindExtremePointsAt2dGmtPolytop(-b_, -c_, a_, &gmt_extreme_points);
 
   for (const auto &point : gmt_extreme_points) {
-    if (((c_ - b_ * point[1] - point[0]) / a_) >= 0) {
+    if (((c_ - b_ * point[1] + point[0]) / a_) >= 0) {
       extreme_points_.insert(std::move<std::array<T, 2>>(
-          {{(c_ - b_ * point[1] - point[0]) / a_, point[1]}}));
+          {{(c_ - b_ * point[1] + point[0]) / a_, point[1]}}));
     }
   }
 
   status_ = Task::OctopusTaskStatus::kOctopusSolved;
 }
 
-template <class T> void Knapsack2dPolytope<T>::Write(std::ostream &s) {
-  s << "The Knapsack2D Polytope:" << std::endl;
-  s << "Conv { (x1, x2) :" << a_ << " * x1 + " << b_ << " * x2 <= " << c_
+template <class T> void InverseKnapsack2dPolyhedron<T>::Write(std::ostream &s) {
+  s << "The Inverse Knapsack2D Polyhedron:" << std::endl;
+  s << "Conv { (x1, x2) :" << a_ << " * x1 + " << b_ << " * x2 >= " << c_
     << std::endl;
   s << "x1,x2 are non-negative integer }" << std::endl;
 
@@ -145,11 +111,11 @@ template <class T> void Knapsack2dPolytope<T>::Write(std::ostream &s) {
     }
     s << "The number of edge points = " << extreme_points_.size() << std::endl;
   } else {
-    s << "The polytop has not yet been described." << std::endl;
+    s << "The polyhedron has not yet been described." << std::endl;
   }
 
   Task::Write(s);
 }
 
-template class Knapsack2dPolytope<OctopusInt4>;
-template class Knapsack2dPolytope<OctopusInt8>;
+template class InverseKnapsack2dPolyhedron<OctopusInt4>;
+template class InverseKnapsack2dPolyhedron<OctopusInt8>;

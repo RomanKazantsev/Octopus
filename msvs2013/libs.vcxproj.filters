@@ -22,12 +22,18 @@
     <ClInclude Include="..\libs\headers\knapsack_2d_polytop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\libs\headers\inverse_knapsack_2d_polyhedron.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\libs\source\knapsack_2d_polytop.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\libs\source\algorithms.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\source\inverse_knapsack_2d_polyhedron.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

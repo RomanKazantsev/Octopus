@@ -80,9 +80,9 @@ class Task {
     }
   }
   /// get task status
-  virtual OctopusTaskStatus GetTaskStatus() const final { return status_; }
+  OctopusTaskStatus GetTaskStatus() const { return status_; }
   /// get algorithm type
-  virtual OctopusAlgorithmType GetAlgorithmType() const final {
+  OctopusAlgorithmType GetAlgorithmType() const {
     return alg_type_;
   }
   /// assignment operator

@@ -30,51 +30,41 @@
 
 /*!
 * \file
-* \brief Two-dimensional Knapsack Polytop Solver.
+* \brief Two-dimensional Inverse Knapsack Polyhedron Solver.
 */
-#ifndef LIBS_HEADERS_KNAPSACK_2D_POLYTOP_H_
-#define LIBS_HEADERS_KNAPSACK_2D_POLYTOP_H_
+#ifndef LIBS_HEADERS_INVERSE_KNAPSACK_2D_POLYHEDRON_H_
+#define LIBS_HEADERS_INVERSE_KNAPSACK_2D_POLYHEDRON_H_
 
-#include <iostream>
 #include <array>
 #include <set>
 
-#include "libs/headers/task.h"
+#include "libs/headers/knapsack_2d_polytop.h"
 
 /*!
-Class for two dimension knapsack polytop.
+Class for two dimension inverse knapsack polytop.
 */
 template <class T>
-class Knapsack2dPolytope : public Task {
+class InverseKnapsack2dPolyhedron : public Knapsack2dPolytope<T> {
  public:
   /// constructor
-  Knapsack2dPolytope(T a, T b, T c);
+  InverseKnapsack2dPolyhedron(T a, T b, T c);
   /// copy constructor
-  Knapsack2dPolytope(Knapsack2dPolytope<T> const& other);
-  /// get computed extreme points of the polytop
-  void GetExtremePoints(std::set<std::array<T, 2>>* extreme_points_ptr) const;
-  /// get polytop parameters
-  void GetParams(T* a_ptr, T* b_ptr, T* c_ptr) const;
-  /// reset problem status
-  void Reset() override;
-  /// find extreme points at the polytop
+  InverseKnapsack2dPolyhedron(InverseKnapsack2dPolyhedron<T> const& other);
+  /// find extreme points at polyhedrone
   void Solve(
       OctopusAlgorithmType
           alg_type = OctopusAlgorithmType::kOctopusIterativeAlg) override;
-  /// write information about polytop to a file
+  /// write information about polyhedron to file
   void Write(std::ostream& s) override;
   /// assignment operator
-  Knapsack2dPolytope<T>& operator=(Knapsack2dPolytope<T> const& other);
+  InverseKnapsack2dPolyhedron<T>& operator=(
+      InverseKnapsack2dPolyhedron<T> const& other);
   /// destructor
-  virtual ~Knapsack2dPolytope();
+  virtual ~InverseKnapsack2dPolyhedron() {}
 
  private:
   /// iterative algorithm
   void RunIterativeAlgorithm();
-
- protected:
-  T a_, b_, c_;
-  std::set<std::array<T, 2>> extreme_points_;
 };
 
-#endif  // LIBS_HEADERS_KNAPSACK_2D_POLYTOP_H_
+#endif  // LIBS_HEADERS_INVERSE_KNAPSACK_2D_POLYHEDRON_H_

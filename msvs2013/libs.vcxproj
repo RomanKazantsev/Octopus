@@ -13,12 +13,14 @@
   <ItemGroup>
     <ClInclude Include="..\libs\headers\types.h" />
     <ClInclude Include="..\libs\headers\knapsack_2d_polytop.h" />
+    <ClInclude Include="..\libs\headers\inverse_knapsack_2d_polyhedron.h" />
     <ClInclude Include="..\libs\headers\task.h" />
     <ClInclude Include="..\libs\headers\algorithms.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\libs\source\algorithms.cc" />
     <ClCompile Include="..\libs\source\knapsack_2d_polytop.cc" />
+    <ClCompile Include="..\libs\source\inverse_knapsack_2d_polyhedron.cc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B33CB1E-9045-481B-A874-CC9D35D0060F}</ProjectGuid>

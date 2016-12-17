@@ -33,6 +33,13 @@
 
 #include "libs/headers/types.h"
 #include "libs/headers/knapsack_2d_polytop.h"
+#include "libs/headers/inverse_knapsack_2d_polyhedron.h"
+
+void RunSolver(Task *task_ptr) {
+  task_ptr->Solve(Task::OctopusAlgorithmType::kOctopusIterativeAlg);
+
+  task_ptr->Write(std::cout);
+}
 
 int main(int argc, char *argv[]) {
   OctopusInt8 a, b, c;
@@ -52,12 +59,17 @@ int main(int argc, char *argv[]) {
   std::cout << std::endl;
 
   try {
-    std::shared_ptr<Knapsack2dPolytope<OctopusInt8>> task_ptr(
-        new Knapsack2dPolytope<OctopusInt8>(a, b, c));
+    std::unique_ptr<Knapsack2dPolytope<OctopusInt8>>
+        knapsack_2d_polytop_task_ptr(
+            new Knapsack2dPolytope<OctopusInt8>(a, b, c));
 
-    task_ptr.get()->Solve(Task::OctopusAlgorithmType::kOctopusIterativeAlg);
+    RunSolver(knapsack_2d_polytop_task_ptr.get());
 
-    task_ptr.get()->Write(std::cout);
+    std::unique_ptr<InverseKnapsack2dPolyhedron<OctopusInt8>>
+        inverse_knapsack_2d_polyhedron_task_ptr(
+            new InverseKnapsack2dPolyhedron<OctopusInt8>(a, b, c));
+
+    RunSolver(inverse_knapsack_2d_polyhedron_task_ptr.get());
   } catch (std::exception const &ex) {
     std::cout << ex.what() << std::endl;
   }
